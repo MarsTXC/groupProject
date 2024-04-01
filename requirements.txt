@@ -1,7 +1,6 @@
 anyio==4.3.0
 CacheControl==0.14.0
 cachetools==5.3.3
-certifi @ file:///private/tmp/python-certifi-20240220-89676-1gaxq6/certifi-2024.2.2
 cffi==1.16.0
 charset-normalizer==3.3.2
 configparser==6.0.1

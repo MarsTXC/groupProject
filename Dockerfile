@@ -1,5 +1,5 @@
 # Use the Python image
-FROM python
+FROM python:3.9.19-slim-bullseye
 
 # Set working directory in the container
 WORKDIR /chatbot
@@ -21,4 +21,4 @@ ENV APIVERSION=2024-02-15-preview
 ENV chatGPT_access_token=7d00a1fc-01e5-4b8e-bb9c-56494b6581c5
 
 # Set the entrypoint
-CMD python chatbot.py
+CMD python bot.py

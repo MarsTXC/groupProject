@@ -8,6 +8,7 @@ WORKDIR /chatbot
 COPY . ./chatbot
 
 # Install dependencies
+RUN pip install update
 RUN pip install -r requirements.txt
 
 # Set environment variables

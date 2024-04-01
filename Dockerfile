@@ -5,7 +5,7 @@ FROM python
 WORKDIR /chatbot
 
 # Copy the Python scripts and other files to the container
-COPY . ./chatbot
+COPY . .
 
 # Install dependencies
 RUN pwd 

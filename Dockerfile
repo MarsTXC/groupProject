@@ -14,7 +14,7 @@ RUN pip install update
 RUN pip install -r requirements.txt
 
 # Set environment variables
-ENV TELEGRAM_TOKEN=6953324907:AAHqJZf0lEo4zfbJPGSTmzKDOrbXazXj5Fo
+ENV TELEGRAM_TOKEN=6755513596:AAHEFApbZrhkyneepW34zCuIgMgKu2y2o2g
 ENV BASICURL=https://chatgpt.hkbu.edu.hk/general/rest
 ENV MODELNAME=gpt-4-turbo
 ENV APIVERSION=2024-02-15-preview

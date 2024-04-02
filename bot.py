@@ -6,7 +6,7 @@ import logging
 import requests
 from store import Store
 
-
+# 定义处理普通文本消息的函数，利用 ChatGPT 生成回复
 def equiped_chatgpt(update: Update, context: CallbackContext) -> None:
     global chatgpt
     try:
@@ -19,25 +19,21 @@ def equiped_chatgpt(update: Update, context: CallbackContext) -> None:
         logging.error(
             "An error occurred while processing the message: %s", str(e))
 
-# def save_recipe(update: Update, context: CallbackContext) -> None:
-#     print('')  
-
-# def get_recipe(update: Update, context: CallbackContext) -> None:
-#     print('')
+# 启动命令的处理函数，向用户发送欢迎信息
 def start(update: Update, context: CallbackContext) -> None:
-    welcome_message = "Welcome to use this Bot! Use /recipe to view the recipe, use /save to save the recipe, and use /list to list all the recipes"
+    welcome_message = "Welcome to use this Bot! Use /recipe to view the recipe, use /save to save the recipe, and use /list to list all the recipes."
     context.bot.send_message(chat_id=update.effective_chat.id, text=welcome_message)
 
+# 关闭 Bot 的命令处理函数（仅供开发者使用）
 def shutdown(update: Update, context: CallbackContext) -> None:
-    # 替换 YOUR_USER_ID 为你的 Telegram 用户 ID
-    if update.message.from_user.id == 6882913651:
+    if update.message.from_user.id == 6882913651:  # 请替换为你的 Telegram 用户 ID
         context.bot.send_message(chat_id=update.effective_chat.id, text="Bot shutting down...")
         update.stop()
         update.is_idle = False
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Permission denied")
 
-
+# 根据用户输入的菜系，获取食谱的处理函数
 def getRecipe(update: Update, context: CallbackContext) -> None:
     if (context.args == []):
         cuisine = 'unspecified'
@@ -51,13 +47,8 @@ def getRecipe(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(
         chat_id=update.effective_chat.id, text=reply_message)
 
-# def error_handler(update, context):
-#     """Log Errors caused by Updates."""
-#     logging.error("Exception while handling an update:",
-#                   exc_info=context.error)
-
-
 class HKBU_GPT():
+    # 初始化 ChatGPT 相关配置
     def __init__(self, config='./config.ini'):
         if type(config) == str:
             self.config = configparser.ConfigParser()
@@ -65,16 +56,8 @@ class HKBU_GPT():
         elif type(config) == configparser.ConfigParser:
             self.config = config
 
+    # 提交消息到 ChatGPT 并获取回复
     def submit(self, message):
-        """submit 
-
-        Args:
-            message (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
-
         conversation = [{"role": "user", "content": message}]
         url = (self.config['CHATGPT']['BASICURL']) + "/deployments/" + (self.config['CHATGPT']
                                                                         ['MODELNAME']) + "/chat/completions/?api-version=" + (self.config['CHATGPT']['APIVERSION'])
@@ -88,19 +71,11 @@ class HKBU_GPT():
         else:
             return 'Error:', response
         
+    # 根据用户输入的菜系，获取 ChatGPT 生成的食谱列表
     def list_recipe(self, message):
-        """list recipe by ChatGPT
-
-        Args:
-            message (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
-
         conversation = [
             {'role': 'system',
-             'content': "You are a recipe recommendation bot. You will use the following format: -cuisine:, -country:, -taste:, -duration:. Each item should use blank line to separate.  User will input a cuisine, and you will list 4 recipes about this cuisine. If user input unspecified, it means you will recommend 4 different cuisine's recipes."},
+             'content': "You are a recipe recommendation bot. You will use the following format: -cuisine:, -country:, -taste:, -duration:. Each item should use a blank line to separate. User will input a cuisine, and you will list 4 recipes about this cuisine. If user inputs 'unspecified', it means you will recommend 4 different cuisine's recipes."},
             {"role": "user", "content": message}
         ]
         url = (self.config['CHATGPT']['BASICURL']) + "/deployments/" + (self.config['CHATGPT']
@@ -115,14 +90,11 @@ class HKBU_GPT():
         else:
             return 'Error:', response
 
-
 def main():
-    """Start the bot."""
-    # Create the Updater and pass it your bot's token.
-
+    # 启动 Bot 并设置命令处理器
     config = configparser.ConfigParser()
     config.read('config.ini')
-    updater = Updater(config['TELEGRAM']['TELEGRAM_TOKEN'])
+    updater = Updater(config['TELEGRAM']['TELEGRAM_TOKEN'], use_context=True)
 
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -133,21 +105,17 @@ def main():
         Filters.text & (~Filters.command), equiped_chatgpt)
     updater.dispatcher.add_handler(chatgpt_handler)
 
-    # on different commands - answer in Telegram
+    # 注册命令处理器
     updater.dispatcher.add_handler(CommandHandler("start", start))
     updater.dispatcher.add_handler(CommandHandler("shutdown", shutdown))
-
     updater.dispatcher.add_handler(CommandHandler("recipe", getRecipe))
-    st = Store()
+
+    st = Store()  # 实例化 Store 类来处理食谱保存和查询
     updater.dispatcher.add_handler(CommandHandler("save", st.save_recipe))
     updater.dispatcher.add_handler(CommandHandler("list", st.get_recipe))
 
-
-    # Start the Bot
-    updater.start_polling()
-    # Run the bot until you press Ctrl-C
-    updater.idle()
-
+    updater.start_polling()  # 开始轮询
+    updater.idle()  # Bot 进入待机状态
 
 if __name__ == '__main__':
     main()

@@ -8,8 +8,6 @@ WORKDIR /chatbot
 COPY . .
 
 # Install dependencies
-RUN pwd 
-RUN ls
 RUN pip install update
 RUN pip install -r requirements.txt
 
@@ -18,7 +16,7 @@ ENV TELEGRAM_TOKEN=6755513596:AAHEFApbZrhkyneepW34zCuIgMgKu2y2o2g
 ENV BASICURL=https://chatgpt.hkbu.edu.hk/general/rest
 ENV MODELNAME=gpt-4-turbo
 ENV APIVERSION=2024-02-15-preview
-ENV chatGPT_access_token=7d00a1fc-01e5-4b8e-bb9c-56494b6581c5
+ENV ACCESS_TOKEN=8cf0d9c3-f999-4b89-a780-6aab50d039c6
 
 # Set the entrypoint
 CMD python bot.py

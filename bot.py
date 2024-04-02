@@ -24,6 +24,19 @@ def equiped_chatgpt(update: Update, context: CallbackContext) -> None:
 
 # def get_recipe(update: Update, context: CallbackContext) -> None:
 #     print('')
+def start(update: Update, context: CallbackContext) -> None:
+    welcome_message = "Welcome to use this Bot! Use /recipe to view the recipe, use /save to save the recipe, and use /list to list all the recipes"
+    context.bot.send_message(chat_id=update.effective_chat.id, text=welcome_message)
+
+def shutdown(update: Update, context: CallbackContext) -> None:
+    # 替换 YOUR_USER_ID 为你的 Telegram 用户 ID
+    if update.message.from_user.id == 6882913651:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Bot shutting down...")
+        update.stop()
+        update.is_idle = False
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Permission denied")
+
 
 def getRecipe(update: Update, context: CallbackContext) -> None:
     if (context.args == []):
@@ -121,6 +134,9 @@ def main():
     updater.dispatcher.add_handler(chatgpt_handler)
 
     # on different commands - answer in Telegram
+    updater.dispatcher.add_handler(CommandHandler("start", start))
+    updater.dispatcher.add_handler(CommandHandler("shutdown", shutdown))
+
     updater.dispatcher.add_handler(CommandHandler("recipe", getRecipe))
     st = Store()
     updater.dispatcher.add_handler(CommandHandler("save", st.save_recipe))

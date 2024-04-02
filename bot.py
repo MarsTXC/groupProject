@@ -59,10 +59,9 @@ class HKBU_GPT():
     # 提交消息到 ChatGPT 并获取回复
     def submit(self, message):
         conversation = [{"role": "user", "content": message}]
-        url = (self.config['CHATGPT']['BASICURL']) + "/deployments/" + (self.config['CHATGPT']
-                                                                        ['MODELNAME']) + "/chat/completions/?api-version=" + (self.config['CHATGPT']['APIVERSION'])
+        url = (os.environ['BASICURL']) + "/deployments/" + (os.environ['MODELNAME']) + "/chat/completions/?api-version=" + (os.environ['APIVERSION'])
         headers = {'Content-Type': 'application/json',
-                   'api-key': (self.config['CHATGPT']['ACCESS_TOKEN'])}
+                   'api-key': (os.environ['ACCESS_TOKEN'])}
         payload = {'messages': conversation}
         response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 200:
@@ -78,10 +77,9 @@ class HKBU_GPT():
              'content': "You are a recipe recommendation bot. You will use the following format: -cuisine:, -country:, -taste:, -duration:. Each item should use a blank line to separate. User will input a cuisine, and you will list 4 recipes about this cuisine. If user inputs 'unspecified', it means you will recommend 4 different cuisine's recipes."},
             {"role": "user", "content": message}
         ]
-        url = (self.config['CHATGPT']['BASICURL']) + "/deployments/" + (self.config['CHATGPT']
-                                                                        ['MODELNAME']) + "/chat/completions/?api-version=" + (self.config['CHATGPT']['APIVERSION'])
+        url = (os.environ['BASICURL']) + "/deployments/" + (os.environ['MODELNAME']) + "/chat/completions/?api-version=" + (os.environ['APIVERSION'])
         headers = {'Content-Type': 'application/json',
-                   'api-key': (self.config['CHATGPT']['ACCESS_TOKEN'])}
+                   'api-key': (os.environ['ACCESS_TOKEN'])}
         payload = {'messages': conversation}
         response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 200:
@@ -94,7 +92,7 @@ def main():
     # 启动 Bot 并设置命令处理器
     config = configparser.ConfigParser()
     config.read('config.ini')
-    updater = Updater(config['TELEGRAM']['TELEGRAM_TOKEN'], use_context=True)
+    updater = Updater(os.environ['TELEGRAM_TOKEN'], use_context=True)
 
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)

@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, db
 import configparser
+import os
 from telegram import Update
 from telegram.ext import CallbackContext
 
@@ -9,9 +10,9 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 # 初始化 Firebase
-cred_object = credentials.Certificate('./firebase.json')
+cred_object = credentials.Certificate(' /etc/secrets/firebase.json')
 firebase_admin.initialize_app(cred_object, {
-    'databaseURL': config['FIREBASE']['URL']
+    'databaseURL': os.environ['URL']
 })
 
 class Store():

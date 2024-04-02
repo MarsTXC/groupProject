@@ -4,7 +4,7 @@ services:
       env: docker
       plan: starter
       buildCommand: pip install -r requirements.txt
-      startCommand: python app.py
+      startCommand: python bot.py
       regions:
         - frankfurt
       healthCheckPath: /

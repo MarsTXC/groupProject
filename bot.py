@@ -26,7 +26,7 @@ def start(update: Update, context: CallbackContext) -> None:
 
 # Turn off the Bot's command processing function (for developers only)
 def shutdown(update: Update, context: CallbackContext) -> None:
-    if update.message.from_user.id == 6882913651:  # 请替换为你的 Telegram 用户 ID
+    if update.message.from_user.id == 6882913651:  # Please replace with your Telegram user ID
         context.bot.send_message(chat_id=update.effective_chat.id, text="Bot shutting down...")
         update.stop()
         update.is_idle = False

@@ -5,11 +5,4 @@ services:
       plan: starter
       buildCommand: pip install -r requirements.txt
       startCommand: python bot.py
-<<<<<<< HEAD
   
-=======
-      regions:
-        - frankfurt
-      healthCheckPath: /
-  
->>>>>>> f32610d42757de38b6fadd51ffb3f15040e9b730

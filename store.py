@@ -10,7 +10,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 # 初始化 Firebase
-cred_object = credentials.Certificate(' /etc/secrets/firebase.json')
+cred_object = credentials.Certificate('./firebase.json')
 firebase_admin.initialize_app(cred_object, {
     'databaseURL': os.environ['URL']
 })

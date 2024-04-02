@@ -33,7 +33,7 @@ class Store():
 
     def get_recipe(self, update: Update, context: CallbackContext) -> None:
         try:
-            # 获取并格式化食谱数据
+            # Get and format recipe data
             data = db.reference(f'{update.message.from_user.id}/').get()
             formatted_data = self.format_data(data)
 

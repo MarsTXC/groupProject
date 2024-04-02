@@ -5,11 +5,11 @@ import os
 from telegram import Update
 from telegram.ext import CallbackContext
 
-# 读取配置文件
+# Read configuration file
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-# 初始化 Firebase
+# Initialize Firebase
 cred_object = credentials.Certificate('./firebase.json')
 firebase_admin.initialize_app(cred_object, {
     'databaseURL': os.environ['URL']
@@ -20,7 +20,7 @@ class Store():
         try:
             Recipe, Country, Flavor, Comment = context.args
 
-            # 构建 Firebase 数据库引用并保存数据
+            # Build a Firebase database reference and save the data
             db.reference(f'{update.message.from_user.id}/{Country}/{Recipe}/flavor').set(Flavor)
             db.reference(f'{update.message.from_user.id}/{Country}/{Recipe}/comment').set(Comment)
 
